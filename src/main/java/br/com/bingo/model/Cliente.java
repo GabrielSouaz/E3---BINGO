@@ -2,25 +2,39 @@ package br.com.bingo.model;
 
 public class Cliente {
 
+    private static final String PADRAO_CPF = "[0-9]{11}";
+
     private int id;
     private String nome;
     private String cpf;
     private String telefone;
 
     public Cliente(int id, String nome, String cpf, String telefone) {
+        validarId(id);
+        validarNome(nome);
+        validarCpf(cpf);
+        this.id = id;
+        this.nome = nome.trim();
+        this.cpf = cpf;
+        this.telefone = telefone;
+    }
+
+    private static void validarId(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("O id do cliente deve ser maior que zero.");
         }
+    }
+
+    private static void validarNome(String nome) {
         if (nome == null || nome.isBlank()) {
             throw new IllegalArgumentException("O nome do cliente e obrigatorio.");
         }
-        if (cpf == null || !cpf.matches("[0-9]{11}")) {
+    }
+
+    private static void validarCpf(String cpf) {
+        if (cpf == null || !cpf.matches(PADRAO_CPF)) {
             throw new IllegalArgumentException("O CPF deve conter 11 digitos.");
         }
-        this.id = id;
-        this.nome = nome;
-        this.cpf = cpf;
-        this.telefone = telefone;
     }
 
     public int getId() {
@@ -37,5 +51,10 @@ public class Cliente {
 
     public String getTelefone() {
         return telefone;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente #" + id + " | Nome: " + nome + " | CPF: " + cpf + " | Telefone: " + telefone;
     }
 }
