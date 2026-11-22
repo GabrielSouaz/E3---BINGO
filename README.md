@@ -50,7 +50,7 @@ mvn compile
 java -cp target/classes br.com.bingo.Main
 ```
 
-## Funcionalidade de Consulta (Pessoa 3)
+## Funcionalidade de Consulta
 
 Desenvolvida na branch `feature/consulta`, seguindo o ciclo RED, GREEN, REFACTOR.
 
