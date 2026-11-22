@@ -44,6 +44,18 @@ public class ConsultaClienteService {
                 .collect(Collectors.toList());
     }
 
+    public List<Cliente> listarTodos() {
+        return repositorio.listarTodos().stream()
+                .sorted(Comparator.comparingInt(Cliente::getId))
+                .collect(Collectors.toList());
+    }
+
+    public List<Cliente> listarOrdenadoPorNome() {
+        return repositorio.listarTodos().stream()
+                .sorted(Comparator.comparing(Cliente::getNome, String.CASE_INSENSITIVE_ORDER))
+                .collect(Collectors.toList());
+    }
+
     private static String limparCpf(String cpf) {
         if (cpf == null) {
             throw new IllegalArgumentException("O CPF e obrigatorio.");
