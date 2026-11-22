@@ -19,4 +19,20 @@ public class ConsultaClienteService {
         return repositorio.buscarPorId(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Cliente com id " + id + " nao encontrado."));
     }
+
+    public Cliente buscarPorCpf(String cpf) {
+        if (cpf == null) {
+            throw new IllegalArgumentException("O CPF e obrigatorio.");
+        }
+        String somenteNumeros = cpf.replaceAll("[^0-9]", "");
+        if (somenteNumeros.length() != 11) {
+            throw new IllegalArgumentException("O CPF deve conter 11 digitos.");
+        }
+        for (Cliente cliente : repositorio.listarTodos()) {
+            if (cliente.getCpf().equals(somenteNumeros)) {
+                return cliente;
+            }
+        }
+        throw new RegistroNaoEncontradoException("Cliente com CPF " + cpf + " nao encontrado.");
+    }
 }
