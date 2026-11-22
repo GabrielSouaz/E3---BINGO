@@ -72,4 +72,59 @@ class ConsultaCartelaServiceTest {
     void deveLancarExcecaoParaIdDeClienteInvalido() {
         assertThrows(IllegalArgumentException.class, () -> consulta.listarPorCliente(-1));
     }
+
+    // ---- listarPorRodada
+
+    @Test
+    void deveListarCartelasDeUmaRodada() {
+        assertEquals(2, consulta.listarPorRodada(2).size());
+    }
+
+    @Test
+    void deveRetornarListaVaziaParaRodadaSemCartelas() {
+        assertTrue(consulta.listarPorRodada(9).isEmpty());
+    }
+
+    @Test
+    void deveLancarExcecaoParaRodadaInvalida() {
+        assertThrows(IllegalArgumentException.class, () -> consulta.listarPorRodada(0));
+    }
+
+    // ---- calcularTotalVendido
+
+    @Test
+    void deveCalcularTotalVendidoEmCartelas() {
+        assertEquals(30.0, consulta.calcularTotalVendido(), 0.001);
+    }
+
+    @Test
+    void deveRetornarZeroQuandoNaoHaCartelasVendidas() {
+        ConsultaCartelaService vazia = new ConsultaCartelaService(new CartelaRepositorio());
+        assertEquals(0.0, vazia.calcularTotalVendido(), 0.001);
+    }
+
+    @Test
+    void deveSomarCentavosCorretamente() {
+        CartelaRepositorio repo = new CartelaRepositorio();
+        repo.adicionar(new Cartela(1, maria, 0.10, 1));
+        repo.adicionar(new Cartela(2, maria, 0.20, 1));
+        assertEquals(0.30, new ConsultaCartelaService(repo).calcularTotalVendido(), 0.0001);
+    }
+
+    // ---- calcularTotalVendidoPorRodada
+
+    @Test
+    void deveCalcularTotalVendidoDeUmaRodada() {
+        assertEquals(15.0, consulta.calcularTotalVendidoPorRodada(1), 0.001);
+    }
+
+    @Test
+    void deveRetornarZeroParaRodadaSemVendas() {
+        assertEquals(0.0, consulta.calcularTotalVendidoPorRodada(5), 0.001);
+    }
+
+    @Test
+    void deveLancarExcecaoAoCalcularRodadaInvalida() {
+        assertThrows(IllegalArgumentException.class, () -> consulta.calcularTotalVendidoPorRodada(-3));
+    }
 }
