@@ -47,4 +47,31 @@ class ConsultaClienteServiceTest {
     void deveLancarExcecaoQuandoIdInvalido() {
         assertThrows(IllegalArgumentException.class, () -> consulta.buscarPorId(0));
     }
+
+    // ---- buscarPorCpf
+
+    @Test
+    void deveBuscarClientePorCpfSomenteNumeros() {
+        assertEquals(3, consulta.buscarPorCpf("11122233344").getId());
+    }
+
+    @Test
+    void deveBuscarClientePorCpfFormatadoComPontoETraco() {
+        assertEquals(1, consulta.buscarPorCpf("123.456.789-01").getId());
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoCpfNaoCadastrado() {
+        assertThrows(RegistroNaoEncontradoException.class, () -> consulta.buscarPorCpf("00000000000"));
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoCpfInvalido() {
+        assertThrows(IllegalArgumentException.class, () -> consulta.buscarPorCpf("123"));
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoCpfNulo() {
+        assertThrows(IllegalArgumentException.class, () -> consulta.buscarPorCpf(null));
+    }
 }
