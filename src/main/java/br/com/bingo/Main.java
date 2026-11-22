@@ -2,10 +2,22 @@ package br.com.bingo;
 
 import java.util.Scanner;
 
+import br.com.bingo.repository.CartelaRepositorio;
+import br.com.bingo.repository.ClienteRepositorio;
+import br.com.bingo.service.ConsultaCartelaService;
+import br.com.bingo.service.ConsultaClienteService;
+import br.com.bingo.view.MenuConsulta;
+
 public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        ClienteRepositorio clienteRepositorio = new ClienteRepositorio();
+        CartelaRepositorio cartelaRepositorio = new CartelaRepositorio();
+        MenuConsulta menuConsulta = new MenuConsulta(
+                new ConsultaClienteService(clienteRepositorio),
+                new ConsultaCartelaService(cartelaRepositorio),
+                scanner, System.out);
         int opcao;
 
         do {
@@ -28,7 +40,7 @@ public class Main {
                     System.out.println("Cadastrar: funcionalidade em desenvolvimento.");
                     break;
                 case 2:
-                    System.out.println("Consultar: funcionalidade em desenvolvimento.");
+                    menuConsulta.exibir();
                     break;
                 case 3:
                     System.out.println("Alterar: funcionalidade em desenvolvimento.");
