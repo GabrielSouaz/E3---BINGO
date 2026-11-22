@@ -127,4 +127,33 @@ class ConsultaCartelaServiceTest {
     void deveLancarExcecaoAoCalcularRodadaInvalida() {
         assertThrows(IllegalArgumentException.class, () -> consulta.calcularTotalVendidoPorRodada(-3));
     }
+
+    // ---- listarTodas
+
+    @Test
+    void deveListarTodasAsCartelasOrdenadasPorId() {
+        CartelaRepositorio repo = new CartelaRepositorio();
+        repo.adicionar(new Cartela(8, joao, 5.0, 1));
+        repo.adicionar(new Cartela(2, maria, 5.0, 1));
+        List<Cartela> todas = new ConsultaCartelaService(repo).listarTodas();
+        assertEquals(2, todas.get(0).getId());
+        assertEquals(8, todas.get(1).getId());
+    }
+
+    @Test
+    void deveListarQuantidadeCorretaDeCartelas() {
+        assertEquals(4, consulta.listarTodas().size());
+    }
+
+    @Test
+    void deveRetornarListaVaziaQuandoNaoHaCartelas() {
+        assertTrue(new ConsultaCartelaService(new CartelaRepositorio()).listarTodas().isEmpty());
+    }
+
+    // ---- construtor
+
+    @Test
+    void naoDeveCriarConsultaComRepositorioNulo() {
+        assertThrows(IllegalArgumentException.class, () -> new ConsultaCartelaService(null));
+    }
 }

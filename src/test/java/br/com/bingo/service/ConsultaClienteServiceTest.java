@@ -191,4 +191,11 @@ class ConsultaClienteServiceTest {
     void deveRetornarFalsoParaIdNegativo() {
         assertFalse(consulta.existeCliente(-1));
     }
+
+    // ---- construtor
+
+    @Test
+    void naoDeveCriarConsultaComRepositorioNulo() {
+        assertThrows(IllegalArgumentException.class, () -> new ConsultaClienteService(null));
+    }
 }
