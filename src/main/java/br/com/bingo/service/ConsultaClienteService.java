@@ -56,6 +56,14 @@ public class ConsultaClienteService {
                 .collect(Collectors.toList());
     }
 
+    public int contarClientes() {
+        return repositorio.listarTodos().size();
+    }
+
+    public boolean existeCliente(int id) {
+        return repositorio.buscarPorId(id).isPresent();
+    }
+
     private static String limparCpf(String cpf) {
         if (cpf == null) {
             throw new IllegalArgumentException("O CPF e obrigatorio.");
