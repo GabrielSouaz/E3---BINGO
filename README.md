@@ -50,6 +50,21 @@ mvn compile
 java -cp target/classes br.com.bingo.Main
 ```
 
+## Funcionalidade de Consulta
+
+Desenvolvida na branch `feature/consulta`, seguindo o ciclo RED, GREEN, REFACTOR.
+
+Classes:
+
+- `model/Cliente` e `model/Cartela`: entidades com atributos privados e validacao no construtor
+- `repository/ClienteRepositorio` e `repository/CartelaRepositorio`: armazenamento em memoria
+- `service/ConsultaClienteService`: busca por id, CPF (com ou sem pontuacao) e nome (ignora maiusculas e acentos), listagem por id e por nome, contagem e verificacao de existencia
+- `service/ConsultaCartelaService`: busca por id, listagem geral, por cliente e por rodada, total vendido geral e por rodada
+- `exception/RegistroNaoEncontradoException`: lancada quando o registro consultado nao existe
+- `view/MenuConsulta`: submenu de consulta no console (opcao 2 do menu principal)
+
+Testes: `ClienteTest`, `CartelaTest`, `ClienteRepositorioTest`, `CartelaRepositorioTest`, `ConsultaClienteServiceTest`, `ConsultaCartelaServiceTest` e `MenuConsultaTest` (caso normal, valor limite e caso de erro para cada metodo).
+
 ## Branches
 
 - `main`: versao estavel, sem push direto (somente via Pull Request)
