@@ -107,4 +107,53 @@ class ConsultaClienteServiceTest {
     void deveLancarExcecaoQuandoTermoDeBuscaVazio() {
         assertThrows(IllegalArgumentException.class, () -> consulta.buscarPorNome("  "));
     }
+
+    // ---- listarTodos
+
+    @Test
+    void deveListarTodosOsClientesOrdenadosPorId() {
+        List<Cliente> todos = consulta.listarTodos();
+        assertEquals(3, todos.size());
+        assertEquals(1, todos.get(0).getId());
+        assertEquals(3, todos.get(2).getId());
+    }
+
+    @Test
+    void deveOrdenarPorIdMesmoQuandoInseridosForaDeOrdem() {
+        ClienteRepositorio outro = new ClienteRepositorio();
+        outro.adicionar(new Cliente(7, "Zeca", "77777777777", "31900000007"));
+        outro.adicionar(new Cliente(5, "Bruno", "55555555555", "31900000005"));
+        List<Cliente> todos = new ConsultaClienteService(outro).listarTodos();
+        assertEquals(5, todos.get(0).getId());
+        assertEquals(7, todos.get(1).getId());
+    }
+
+    @Test
+    void deveRetornarListaVaziaQuandoNaoHaClientesCadastrados() {
+        ConsultaClienteService vazia = new ConsultaClienteService(new ClienteRepositorio());
+        assertTrue(vazia.listarTodos().isEmpty());
+    }
+
+    // ---- listarOrdenadoPorNome
+
+    @Test
+    void deveListarClientesEmOrdemAlfabetica() {
+        List<Cliente> todos = consulta.listarOrdenadoPorNome();
+        assertEquals("Ana Maria Costa", todos.get(0).getNome());
+        assertEquals("Joao Souza", todos.get(1).getNome());
+        assertEquals("Maria Silva", todos.get(2).getNome());
+    }
+
+    @Test
+    void deveOrdenarIgnorandoMaiusculas() {
+        repositorio.adicionar(new Cliente(4, "bruno lima", "44444444444", "31900000004"));
+        List<Cliente> todos = consulta.listarOrdenadoPorNome();
+        assertEquals("bruno lima", todos.get(1).getNome());
+    }
+
+    @Test
+    void deveRetornarListaVaziaAoOrdenarSemClientes() {
+        ConsultaClienteService vazia = new ConsultaClienteService(new ClienteRepositorio());
+        assertTrue(vazia.listarOrdenadoPorNome().isEmpty());
+    }
 }
