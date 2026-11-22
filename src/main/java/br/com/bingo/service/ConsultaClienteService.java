@@ -14,6 +14,9 @@ public class ConsultaClienteService {
     private final ClienteRepositorio repositorio;
 
     public ConsultaClienteService(ClienteRepositorio repositorio) {
+        if (repositorio == null) {
+            throw new IllegalArgumentException("O repositorio de clientes e obrigatorio.");
+        }
         this.repositorio = repositorio;
     }
 

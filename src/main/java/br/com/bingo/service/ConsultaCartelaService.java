@@ -1,5 +1,6 @@
 package br.com.bingo.service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -13,7 +14,16 @@ public class ConsultaCartelaService {
     private final CartelaRepositorio repositorio;
 
     public ConsultaCartelaService(CartelaRepositorio repositorio) {
+        if (repositorio == null) {
+            throw new IllegalArgumentException("O repositorio de cartelas e obrigatorio.");
+        }
         this.repositorio = repositorio;
+    }
+
+    public List<Cartela> listarTodas() {
+        return repositorio.listarTodas().stream()
+                .sorted(Comparator.comparingInt(Cartela::getId))
+                .collect(Collectors.toList());
     }
 
     public Cartela buscarPorId(int id) {
