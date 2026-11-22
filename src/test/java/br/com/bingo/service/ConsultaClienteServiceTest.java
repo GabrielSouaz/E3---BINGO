@@ -156,4 +156,39 @@ class ConsultaClienteServiceTest {
         ConsultaClienteService vazia = new ConsultaClienteService(new ClienteRepositorio());
         assertTrue(vazia.listarOrdenadoPorNome().isEmpty());
     }
+
+    // ---- contarClientes
+
+    @Test
+    void deveContarClientesCadastrados() {
+        assertEquals(3, consulta.contarClientes());
+    }
+
+    @Test
+    void deveRetornarZeroQuandoNaoHaClientes() {
+        assertEquals(0, new ConsultaClienteService(new ClienteRepositorio()).contarClientes());
+    }
+
+    @Test
+    void deveAtualizarContagemAposNovoCadastro() {
+        repositorio.adicionar(new Cliente(4, "Bruno", "44444444444", "31900000004"));
+        assertEquals(4, consulta.contarClientes());
+    }
+
+    // ---- existeCliente
+
+    @Test
+    void deveInformarQueClienteExiste() {
+        assertTrue(consulta.existeCliente(1));
+    }
+
+    @Test
+    void deveInformarQueClienteNaoExiste() {
+        assertFalse(consulta.existeCliente(50));
+    }
+
+    @Test
+    void deveRetornarFalsoParaIdNegativo() {
+        assertFalse(consulta.existeCliente(-1));
+    }
 }
