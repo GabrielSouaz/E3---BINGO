@@ -35,4 +35,33 @@ public class ConsultaCartelaService {
         }
         return resultado;
     }
+
+    public List<Cartela> listarPorRodada(int numeroRodada) {
+        if (numeroRodada <= 0) {
+            throw new IllegalArgumentException("O numero da rodada deve ser maior que zero.");
+        }
+        List<Cartela> resultado = new ArrayList<>();
+        for (Cartela cartela : repositorio.listarTodas()) {
+            if (cartela.getNumeroRodada() == numeroRodada) {
+                resultado.add(cartela);
+            }
+        }
+        return resultado;
+    }
+
+    public double calcularTotalVendido() {
+        double total = 0;
+        for (Cartela cartela : repositorio.listarTodas()) {
+            total += cartela.getValor();
+        }
+        return total;
+    }
+
+    public double calcularTotalVendidoPorRodada(int numeroRodada) {
+        double total = 0;
+        for (Cartela cartela : listarPorRodada(numeroRodada)) {
+            total += cartela.getValor();
+        }
+        return total;
+    }
 }
