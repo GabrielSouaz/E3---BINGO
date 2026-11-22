@@ -1,7 +1,8 @@
 package br.com.bingo.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import br.com.bingo.exception.RegistroNaoEncontradoException;
 import br.com.bingo.model.Cartela;
@@ -16,52 +17,42 @@ public class ConsultaCartelaService {
     }
 
     public Cartela buscarPorId(int id) {
-        if (id <= 0) {
-            throw new IllegalArgumentException("O id da cartela deve ser maior que zero.");
-        }
+        validarPositivo(id, "O id da cartela deve ser maior que zero.");
         return repositorio.buscarPorId(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Cartela com id " + id + " nao encontrada."));
     }
 
     public List<Cartela> listarPorCliente(int clienteId) {
-        if (clienteId <= 0) {
-            throw new IllegalArgumentException("O id do cliente deve ser maior que zero.");
-        }
-        List<Cartela> resultado = new ArrayList<>();
-        for (Cartela cartela : repositorio.listarTodas()) {
-            if (cartela.getCliente().getId() == clienteId) {
-                resultado.add(cartela);
-            }
-        }
-        return resultado;
+        validarPositivo(clienteId, "O id do cliente deve ser maior que zero.");
+        return filtrar(cartela -> cartela.getCliente().getId() == clienteId);
     }
 
     public List<Cartela> listarPorRodada(int numeroRodada) {
-        if (numeroRodada <= 0) {
-            throw new IllegalArgumentException("O numero da rodada deve ser maior que zero.");
-        }
-        List<Cartela> resultado = new ArrayList<>();
-        for (Cartela cartela : repositorio.listarTodas()) {
-            if (cartela.getNumeroRodada() == numeroRodada) {
-                resultado.add(cartela);
-            }
-        }
-        return resultado;
+        validarPositivo(numeroRodada, "O numero da rodada deve ser maior que zero.");
+        return filtrar(cartela -> cartela.getNumeroRodada() == numeroRodada);
     }
 
     public double calcularTotalVendido() {
-        double total = 0;
-        for (Cartela cartela : repositorio.listarTodas()) {
-            total += cartela.getValor();
-        }
-        return total;
+        return somarValores(repositorio.listarTodas());
     }
 
     public double calcularTotalVendidoPorRodada(int numeroRodada) {
-        double total = 0;
-        for (Cartela cartela : listarPorRodada(numeroRodada)) {
-            total += cartela.getValor();
+        return somarValores(listarPorRodada(numeroRodada));
+    }
+
+    private List<Cartela> filtrar(Predicate<Cartela> criterio) {
+        return repositorio.listarTodas().stream()
+                .filter(criterio)
+                .collect(Collectors.toList());
+    }
+
+    private static double somarValores(List<Cartela> cartelas) {
+        return cartelas.stream().mapToDouble(Cartela::getValor).sum();
+    }
+
+    private static void validarPositivo(int valor, String mensagem) {
+        if (valor <= 0) {
+            throw new IllegalArgumentException(mensagem);
         }
-        return total;
     }
 }
