@@ -2,6 +2,8 @@ package br.com.bingo.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -73,5 +75,36 @@ class ConsultaClienteServiceTest {
     @Test
     void deveLancarExcecaoQuandoCpfNulo() {
         assertThrows(IllegalArgumentException.class, () -> consulta.buscarPorCpf(null));
+    }
+
+    // ---- buscarPorNome
+
+    @Test
+    void deveBuscarClientesPorParteDoNome() {
+        List<Cliente> encontrados = consulta.buscarPorNome("maria");
+        assertEquals(2, encontrados.size());
+    }
+
+    @Test
+    void deveIgnorarMaiusculasEAcentosNaBuscaPorNome() {
+        repositorio.adicionar(new Cliente(4, "José Antônio", "55566677788", "31966660000"));
+        assertEquals(4, consulta.buscarPorNome("JOSE ANTONIO").get(0).getId());
+    }
+
+    @Test
+    void deveRetornarResultadoOrdenadoPorNome() {
+        List<Cliente> encontrados = consulta.buscarPorNome("Maria");
+        assertEquals("Ana Maria Costa", encontrados.get(0).getNome());
+        assertEquals("Maria Silva", encontrados.get(1).getNome());
+    }
+
+    @Test
+    void deveRetornarListaVaziaQuandoNenhumNomeCorresponde() {
+        assertTrue(consulta.buscarPorNome("Pedro").isEmpty());
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoTermoDeBuscaVazio() {
+        assertThrows(IllegalArgumentException.class, () -> consulta.buscarPorNome("  "));
     }
 }
