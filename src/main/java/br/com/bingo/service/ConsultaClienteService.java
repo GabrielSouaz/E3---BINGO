@@ -1,5 +1,10 @@
 package br.com.bingo.service;
 
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import br.com.bingo.exception.RegistroNaoEncontradoException;
 import br.com.bingo.model.Cliente;
 import br.com.bingo.repository.ClienteRepositorio;
@@ -34,5 +39,23 @@ public class ConsultaClienteService {
             }
         }
         throw new RegistroNaoEncontradoException("Cliente com CPF " + cpf + " nao encontrado.");
+    }
+
+    public List<Cliente> buscarPorNome(String termo) {
+        if (termo == null || termo.isBlank()) {
+            throw new IllegalArgumentException("Informe um nome para a busca.");
+        }
+        String termoNormalizado = Normalizer.normalize(termo.trim(), Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "").toLowerCase();
+        List<Cliente> encontrados = new ArrayList<>();
+        for (Cliente cliente : repositorio.listarTodos()) {
+            String nomeNormalizado = Normalizer.normalize(cliente.getNome(), Normalizer.Form.NFD)
+                    .replaceAll("\\p{M}", "").toLowerCase();
+            if (nomeNormalizado.contains(termoNormalizado)) {
+                encontrados.add(cliente);
+            }
+        }
+        encontrados.sort(Comparator.comparing(Cliente::getNome));
+        return encontrados;
     }
 }
