@@ -6,6 +6,8 @@ import java.util.Map;
 
 public class ClienteService {
     private Map<String, Cliente> bancoDeDados = new HashMap<>();
-}git add src/main/java/br/com/bingo/service/ClienteService.java
-git commit -m "GREEN: criando estrutura base do ClienteService com mapa"
-git push origin feature/exclusao
+
+    public void cadastrar(Cliente cliente) {
+        bancoDeDados.put(cliente.getId(), cliente);
+    }
+}
