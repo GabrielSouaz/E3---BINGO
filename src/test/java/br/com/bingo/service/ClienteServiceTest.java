@@ -14,7 +14,6 @@ public class ClienteServiceTest {
         service = new ClienteService();
     }
 
-    // TESTE 1: Caso Normal
     @Test
     public void deveExcluirClienteExistente() {
         Cliente cliente = new Cliente("1", "João Silva", false);
@@ -23,7 +22,6 @@ public class ClienteServiceTest {
         assertFalse(service.buscarPorId("1").isPresent(), "O cliente deveria ter sido removido.");
     }
 
-    // TESTE 2: Caso Limite (Regra de negócio)
     @Test
     public void naoDeveExcluirClienteComPendenciaFinanceira() {
         Cliente cliente = new Cliente("2", "Maria Souza", true);
@@ -35,25 +33,7 @@ public class ClienteServiceTest {
         assertTrue(service.buscarPorId("2").isPresent(), "O cliente não deveria ter sido removido.");
     }
 
-    // TESTE 3: Caso de Erro
     @Test
-    public void deveLancarErroAoExcluirClienteInexistente() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            service.excluir("999");
-        });
-        assertEquals("Cliente não encontrado para exclusão.", exception.getMessage());
-    }
-        @Test
-    public void naoDeveExcluirClienteComPendenciaFinanceira() {
-        Cliente cliente = new Cliente("2", "Maria Souza", true);
-        service.cadastrar(cliente);
-        Exception exception = assertThrows(IllegalStateException.class, () -> {
-            service.excluir("2");
-        });
-        assertEquals("Não é possível excluir um cliente com pendências financeiras.", exception.getMessage());
-        assertTrue(service.buscarPorId("2").isPresent(), "O cliente não deveria ter sido removido.");
-    }
-        @Test
     public void deveLancarErroAoExcluirClienteInexistente() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             service.excluir("999");
