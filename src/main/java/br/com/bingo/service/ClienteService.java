@@ -17,13 +17,18 @@ public class ClienteService {
     }
 
     public void excluir(String id) {
-        Cliente cliente = bancoDeDados.get(id);
-        if (cliente == null) {
-            throw new IllegalArgumentException("Cliente não encontrado para exclusão.");
-        }
+        Cliente cliente = buscarOuFalhar(id);
         if (cliente.isPossuiDivida()) {
             throw new IllegalStateException("Não é possível excluir um cliente com pendências financeiras.");
         }
         bancoDeDados.remove(id);
+    }
+
+    private Cliente buscarOuFalhar(String id) {
+        Cliente cliente = bancoDeDados.get(id);
+        if (cliente == null) {
+            throw new IllegalArgumentException("Cliente não encontrado para exclusão.");
+        }
+        return cliente;
     }
 }
