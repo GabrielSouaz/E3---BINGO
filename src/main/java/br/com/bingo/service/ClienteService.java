@@ -21,5 +21,8 @@ public class ClienteService {
         if (cliente == null) {
             throw new IllegalArgumentException("Cliente não encontrado para exclusão.");
         }
+        if (cliente.isPossuiDivida()) {
+            throw new IllegalStateException("Não é possível excluir um cliente com pendências financeiras.");
+        }
     }
 }
