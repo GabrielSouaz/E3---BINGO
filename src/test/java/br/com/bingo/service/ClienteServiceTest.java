@@ -53,4 +53,11 @@ public class ClienteServiceTest {
         assertEquals("Não é possível excluir um cliente com pendências financeiras.", exception.getMessage());
         assertTrue(service.buscarPorId("2").isPresent(), "O cliente não deveria ter sido removido.");
     }
+        @Test
+    public void deveLancarErroAoExcluirClienteInexistente() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            service.excluir("999");
+        });
+        assertEquals("Cliente não encontrado para exclusão.", exception.getMessage());
+    }
 }
