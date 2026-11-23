@@ -15,4 +15,11 @@ public class ClienteService {
     public Optional<Cliente> buscarPorId(String id) {
         return Optional.ofNullable(bancoDeDados.get(id));
     }
+
+    public void excluir(String id) {
+        Cliente cliente = bancoDeDados.get(id);
+        if (cliente == null) {
+            throw new IllegalArgumentException("Cliente não encontrado para exclusão.");
+        }
+    }
 }
