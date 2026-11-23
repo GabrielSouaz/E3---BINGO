@@ -24,5 +24,6 @@ public class ClienteService {
         if (cliente.isPossuiDivida()) {
             throw new IllegalStateException("Não é possível excluir um cliente com pendências financeiras.");
         }
+        bancoDeDados.remove(id);
     }
 }
