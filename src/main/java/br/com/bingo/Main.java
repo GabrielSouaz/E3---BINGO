@@ -11,6 +11,7 @@ public class Main {
         ClienteService clienteService = new ClienteService();
         int opcao;
         
-        // ... (resto do código original do Main)
+                clienteService.cadastrar(new Cliente("1", "Cliente Teste", false));
+        clienteService.cadastrar(new Cliente("2", "Cliente Devedor", true));
     }
 }
