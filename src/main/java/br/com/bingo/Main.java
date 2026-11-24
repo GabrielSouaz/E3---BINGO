@@ -8,6 +8,9 @@ import br.com.bingo.service.ConsultaCartelaService;
 import br.com.bingo.service.ConsultaClienteService;
 import br.com.bingo.view.MenuConsulta;
 
+import br.com.bingo.model.Cliente;
+import br.com.bingo.service.ClienteService;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -18,6 +21,11 @@ public class Main {
                 new ConsultaClienteService(clienteRepositorio),
                 new ConsultaCartelaService(cartelaRepositorio),
                 scanner, System.out);
+
+        ClienteService clienteService = new ClienteService();
+        clienteService.cadastrar(new Cliente("1", "Cliente Teste", false));
+        clienteService.cadastrar(new Cliente("2", "Cliente Devedor", true));
+
         int opcao;
 
         do {
@@ -46,7 +54,16 @@ public class Main {
                     System.out.println("Alterar: funcionalidade em desenvolvimento.");
                     break;
                 case 4:
-                    System.out.println("Excluir: funcionalidade em desenvolvimento.");
+                    // Seu código de exclusão
+                    System.out.print("Digite o ID do cliente a ser excluído: ");
+                    int idExclusao = scanner.nextInt();
+                    scanner.nextLine(); // Limpar o buffer
+                    try {
+                        clienteService.excluir(idExclusao);
+                        System.out.println("Cliente excluído com sucesso!");
+                    } catch (Exception e) {
+                        System.out.println("Erro: " + e.getMessage());
+                    }
                     break;
                 case 0:
                     System.out.println("Encerrando o sistema.");
