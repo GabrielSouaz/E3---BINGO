@@ -17,7 +17,7 @@ public class Cliente {
         this.nome = nome.trim();
         this.cpf = cpf;
         this.telefone = telefone;
-        this.possuiDivida = false; // Padrão
+        this.possuiDivida = false;
     }
 
     public Cliente(String id, String nome, boolean possuiDivida) {
@@ -54,4 +54,15 @@ public class Cliente {
     public void setTelefone(String telefone) { this.telefone = telefone; }
     public boolean isPossuiDivida() { return possuiDivida; }
     public void setPossuiDivida(boolean possuiDivida) { this.possuiDivida = possuiDivida; }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", possuiDivida=" + possuiDivida +
+                '}';
+    }
 }
