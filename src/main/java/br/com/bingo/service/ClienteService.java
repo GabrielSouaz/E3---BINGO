@@ -16,6 +16,12 @@ public class ClienteService {
         );
     }
 
+    if (bancoDeDados.containsKey(cliente.getId())) {
+        throw new IllegalArgumentException(
+            "Ja existe um cliente com esse id."
+        );
+    }
+
         bancoDeDados.put(cliente.getId(), cliente);
     }
 
