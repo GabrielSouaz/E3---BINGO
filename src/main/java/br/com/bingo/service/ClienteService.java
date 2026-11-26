@@ -9,7 +9,13 @@ public class ClienteService {
     
     private Map<Integer, Cliente> bancoDeDados = new HashMap<>();
 
-    public void cadastrar(Cliente cliente) {
+   public void cadastrar(Cliente cliente) {
+    if (cliente == null) {
+        throw new IllegalArgumentException(
+            "Cliente nao pode ser nulo."
+        );
+    }
+
         bancoDeDados.put(cliente.getId(), cliente);
     }
 
