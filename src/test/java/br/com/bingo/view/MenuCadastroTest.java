@@ -48,4 +48,15 @@ class MenuCadastroTest {
         assertTrue(saida.contains("Valor invalido"));
         assertFalse(clienteService.buscarPorId(1).isPresent());
     }
+    @Test
+    void deveMostrarMensagemParaIdDuplicado() {
+        executar("1\nAna Silva\n12345678901\n31999999999\n");
+
+        String saida = executar(
+            "1\nMaria Souza\n98765432100\n31988888888\n");
+
+        assertTrue(saida.contains("Ja existe um cliente com esse id."));
+        assertEquals("Ana Silva",
+            clienteService.buscarPorId(1).get().getNome());
+    }
 }
