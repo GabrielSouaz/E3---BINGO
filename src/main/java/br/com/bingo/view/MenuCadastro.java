@@ -42,10 +42,14 @@ public class MenuCadastro {
     saida.print("Telefone: ");
     String telefone = entrada.nextLine();
 
-    Cliente cliente = new Cliente(id, nome, cpf, telefone);
+    try {
+        Cliente cliente = new Cliente(id, nome, cpf, telefone);
 
-    clienteService.cadastrar(cliente);
+        clienteService.cadastrar(cliente);
 
-    saida.println("Cliente cadastrado com sucesso!");
+        saida.println("Cliente cadastrado com sucesso!");
+     } catch (IllegalArgumentException e) {
+        saida.println(e.getMessage());
+     }
     }
 }
