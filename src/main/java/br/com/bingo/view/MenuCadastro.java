@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 import br.com.bingo.service.ClienteService;
+import br.com.bingo.model.Cliente;
 
 public class MenuCadastro {
 
@@ -20,5 +21,24 @@ public class MenuCadastro {
     }
 
     public void exibir() {
+    saida.println("----- CADASTRAR CLIENTE -----");
+
+    saida.print("Id do cliente: ");
+    int id = Integer.parseInt(entrada.nextLine());
+
+    saida.print("Nome: ");
+    String nome = entrada.nextLine();
+
+    saida.print("CPF: ");
+    String cpf = entrada.nextLine();
+
+    saida.print("Telefone: ");
+    String telefone = entrada.nextLine();
+
+    Cliente cliente = new Cliente(id, nome, cpf, telefone);
+
+    clienteService.cadastrar(cliente);
+
+    saida.println("Cliente cadastrado com sucesso!");
     }
 }
