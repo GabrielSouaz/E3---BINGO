@@ -10,20 +10,27 @@ public class ClienteService {
     private Map<Integer, Cliente> bancoDeDados = new HashMap<>();
 
    public void cadastrar(Cliente cliente) {
+    validarCliente(cliente);
+    validarIdDuplicado(cliente.getId());
+
+    bancoDeDados.put(cliente.getId(), cliente);
+}
+
+    private void validarCliente(Cliente cliente) {
     if (cliente == null) {
         throw new IllegalArgumentException(
             "Cliente nao pode ser nulo."
         );
     }
+}
 
-    if (bancoDeDados.containsKey(cliente.getId())) {
+    private void validarIdDuplicado(int id) {
+    if (bancoDeDados.containsKey(id)) {
         throw new IllegalArgumentException(
             "Ja existe um cliente com esse id."
         );
     }
-
-        bancoDeDados.put(cliente.getId(), cliente);
-    }
+}
 
     public Optional<Cliente> buscarPorId(int id) {
         return Optional.ofNullable(bancoDeDados.get(id));
