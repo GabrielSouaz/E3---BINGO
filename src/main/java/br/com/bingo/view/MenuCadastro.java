@@ -24,7 +24,14 @@ public class MenuCadastro {
     saida.println("----- CADASTRAR CLIENTE -----");
 
     saida.print("Id do cliente: ");
-    int id = Integer.parseInt(entrada.nextLine());
+    int id;
+
+    try {
+        id = Integer.parseInt(entrada.nextLine().trim());
+    } catch (NumberFormatException e) {
+        saida.println("Valor invalido: informe um numero inteiro.");
+        return;
+    }
 
     saida.print("Nome: ");
     String nome = entrada.nextLine();
