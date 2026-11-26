@@ -3,8 +3,8 @@ package br.com.bingo.view;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-import br.com.bingo.service.ClienteService;
 import br.com.bingo.model.Cliente;
+import br.com.bingo.service.ClienteService;
 
 public class MenuCadastro {
 
@@ -21,35 +21,41 @@ public class MenuCadastro {
     }
 
     public void exibir() {
-    saida.println("----- CADASTRAR CLIENTE -----");
+        saida.println("----- CADASTRAR CLIENTE -----");
 
-    saida.print("Id do cliente: ");
-    int id;
-
-    try {
-        id = Integer.parseInt(entrada.nextLine().trim());
-    } catch (NumberFormatException e) {
-        saida.println("Valor invalido: informe um numero inteiro.");
-        return;
+        try {
+            int id = lerId();
+            cadastrarCliente(id);
+        } catch (IllegalArgumentException e) {
+            saida.println(e.getMessage());
+        }
     }
 
-    saida.print("Nome: ");
-    String nome = entrada.nextLine();
+    private int lerId() {
+        saida.print("Id do cliente: ");
 
-    saida.print("CPF: ");
-    String cpf = entrada.nextLine();
+        try {
+            return Integer.parseInt(entrada.nextLine().trim());
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(
+                    "Valor invalido: informe um numero inteiro.");
+        }
+    }
 
-    saida.print("Telefone: ");
-    String telefone = entrada.nextLine();
+    private void cadastrarCliente(int id) {
+        saida.print("Nome: ");
+        String nome = entrada.nextLine();
 
-    try {
+        saida.print("CPF: ");
+        String cpf = entrada.nextLine();
+
+        saida.print("Telefone: ");
+        String telefone = entrada.nextLine();
+
         Cliente cliente = new Cliente(id, nome, cpf, telefone);
 
         clienteService.cadastrar(cliente);
 
         saida.println("Cliente cadastrado com sucesso!");
-     } catch (IllegalArgumentException e) {
-        saida.println(e.getMessage());
-     }
     }
 }
