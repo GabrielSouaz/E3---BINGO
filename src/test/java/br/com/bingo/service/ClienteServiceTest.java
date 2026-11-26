@@ -13,7 +13,43 @@ public class ClienteServiceTest {
     public void setup() {
         service = new ClienteService();
     }
+    @Test
+    public void deveCadastrarClienteValido() {
+    Cliente cliente = new Cliente(
+        1, "Ana Silva", "12345678901", "31999999999"
+    );
 
+    service.cadastrar(cliente);
+
+    assertTrue(service.buscarPorId(1).isPresent());
+    assertEquals(cliente, service.buscarPorId(1).get());
+    }
+
+    @Test
+    public void naoDeveCadastrarClienteComIdDuplicado() {
+    Cliente cliente1 = new Cliente(
+        1, "Ana Silva", "12345678901", "31999999999"
+    );
+
+    Cliente cliente2 = new Cliente(
+        1, "Maria Souza", "98765432100", "31988888888"
+    );
+
+    service.cadastrar(cliente1);
+
+    assertThrows(IllegalArgumentException.class, () -> {
+        service.cadastrar(cliente2);
+    });
+
+    assertEquals(cliente1, service.buscarPorId(1).get());
+    }
+
+    @Test
+    public void naoDeveCadastrarClienteNulo() {
+    assertThrows(IllegalArgumentException.class, () -> {
+        service.cadastrar(null);
+    });
+    }
     @Test
     public void deveExcluirClienteExistente() {
         Cliente cliente = new Cliente("1", "João Silva", false);
