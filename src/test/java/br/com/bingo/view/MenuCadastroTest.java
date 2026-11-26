@@ -59,4 +59,14 @@ class MenuCadastroTest {
         assertEquals("Ana Silva",
             clienteService.buscarPorId(1).get().getNome());
     }
+    @Test
+    void deveMostrarMensagemParaCpfInvalido() {
+        String saida = executar(
+            "1\nAna Silva\n123\n31999999999\n");
+
+        assertTrue(saida.contains(
+            "O CPF deve conter 11 digitos numericos."));
+
+        assertFalse(clienteService.buscarPorId(1).isPresent());
+    }
 }
