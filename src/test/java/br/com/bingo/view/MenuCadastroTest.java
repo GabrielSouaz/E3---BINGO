@@ -69,4 +69,14 @@ class MenuCadastroTest {
 
         assertFalse(clienteService.buscarPorId(1).isPresent());
     }
+    @Test
+    void deveImpedirCadastroComIdZero() {
+        String saida = executar(
+            "0\nAna Silva\n12345678901\n31999999999\n");
+
+        assertTrue(saida.contains(
+            "O id do cliente deve ser maior que zero."));
+
+        assertFalse(clienteService.buscarPorId(0).isPresent());
+    }
 }
