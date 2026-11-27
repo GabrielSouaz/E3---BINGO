@@ -46,6 +46,10 @@ E3---BINGO
 
 Tambem disponivel em [SVG](docs/diagrama_classes.svg), que nao perde qualidade com zoom.
 
+## Apresentacao
+
+Os slides da apresentacao do trabalho estao em [docs/apresentacao_E3_BINGO.pptx](docs/apresentacao_E3_BINGO.pptx).
+
 ## Como executar
 
 Compilar e rodar os testes:
