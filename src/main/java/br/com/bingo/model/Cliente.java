@@ -1,0 +1,84 @@
+package br.com.bingo.model;
+
+public class Cliente {
+    private int id;
+    private String nome;
+    private String cpf;
+    private String telefone;
+    private boolean possuiDivida;
+
+    private static final String PADRAO_CPF = "[0-9]{11}";
+    private static final String PADRAO_TELEFONE = "[0-9]{10,11}";
+
+    public Cliente(int id, String nome, String cpf, String telefone) {
+        this.validarId(id);
+        this.validarNome(nome);
+        this.validarCpf(cpf);
+        this.id = id;
+        this.nome = nome.trim();
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.possuiDivida = false;
+    }
+
+    public Cliente(String id, String nome, boolean possuiDivida) {
+        this.id = Integer.parseInt(id);
+        this.nome = nome;
+        this.possuiDivida = possuiDivida;
+    }
+
+    private void validarId(int id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("O id do cliente deve ser maior que zero.");
+        }
+    }
+
+    private void validarNome(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do cliente nao pode ser vazio.");
+        }
+    }
+
+    private void validarCpf(String cpf) {
+        if (cpf == null || !cpf.matches(PADRAO_CPF)) {
+            throw new IllegalArgumentException("O CPF deve conter 11 digitos numericos.");
+        }
+    }
+
+    private void validarTelefone(String telefone) {
+        if (telefone != null && !telefone.isEmpty() && !telefone.matches(PADRAO_TELEFONE)) {
+            throw new IllegalArgumentException("O telefone deve conter 10 ou 11 digitos numericos.");
+        }
+    }
+
+    public void atualizarDados(String nome, String cpf, String telefone) {
+        this.validarNome(nome);
+        this.validarCpf(cpf);
+        this.validarTelefone(telefone);
+        this.nome = nome.trim();
+        this.cpf = cpf;
+        this.telefone = telefone;
+    }
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    public String getCpf() { return cpf; }
+    public void setCpf(String cpf) { this.cpf = cpf; }
+    public String getTelefone() { return telefone; }
+    public void setTelefone(String telefone) { this.telefone = telefone; }
+    public boolean isPossuiDivida() { return possuiDivida; }
+    public void setPossuiDivida(boolean possuiDivida) { this.possuiDivida = possuiDivida; }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", possuiDivida=" + possuiDivida +
+                '}';
+    }
+}

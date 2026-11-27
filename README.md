@@ -8,6 +8,17 @@ O sistema apoia a gestao de um jogo de bingo: clientes (cadastrar, consultar, al
 
 Este repositorio foi criado em uma conta diferente da usada nas atividades anteriores, porque o limite de uso do Codespaces da conta anterior foi atingido.
 
+## Integrantes
+
+| Nome | RA | GitHub |
+|------|----|--------|
+| Ana Beatriz Silva Costa | 326132109 | @beatrizc-s |
+| Gabriel de Souza Ribeiro | 32514596 | @GabrielSouaz |
+| Carlos Gabriel Claudino de Souza | 325131028 | @9890858Cg |
+| Lara Cristyna Rodrigues Lopes Silva | 325131743 | @LaraCristy |
+| Breno Henrique Barbosa Correia | 32517400 | @Brenoh1810 |
+| Bento Ramalho Botelho | 325119554 | @CelestialB80-jpg |
+
 ## Tecnologias
 
 - Java 17
@@ -49,6 +60,33 @@ Ou compilando e executando direto:
 mvn compile
 java -cp target/classes br.com.bingo.Main
 ```
+
+## Funcionalidade de Consulta
+
+Desenvolvida na branch `feature/consulta`, seguindo o ciclo RED, GREEN, REFACTOR.
+
+Classes:
+
+- `model/Cliente` e `model/Cartela`: entidades com atributos privados e validacao no construtor
+- `repository/ClienteRepositorio` e `repository/CartelaRepositorio`: armazenamento em memoria
+- `service/ConsultaClienteService`: busca por id, CPF (com ou sem pontuacao) e nome (ignora maiusculas e acentos), listagem por id e por nome, contagem e verificacao de existencia
+- `service/ConsultaCartelaService`: busca por id, listagem geral, por cliente e por rodada, total vendido geral e por rodada
+- `exception/RegistroNaoEncontradoException`: lancada quando o registro consultado nao existe
+- `view/MenuConsulta`: submenu de consulta no console (opcao 2 do menu principal)
+
+Testes: `ClienteTest`, `CartelaTest`, `ClienteRepositorioTest`, `CartelaRepositorioTest`, `ConsultaClienteServiceTest`, `ConsultaCartelaServiceTest` e `MenuConsultaTest` (caso normal, valor limite e caso de erro para cada metodo).
+
+## Funcionalidade de Alteracao
+
+Desenvolvida na branch `feature/alteracao`, seguindo o ciclo RED, GREEN, REFACTOR.
+
+Classes e metodos:
+
+- `model/Cliente.atualizarDados(nome, cpf, telefone)`: valida nome (nao vazio), CPF (11 digitos) e telefone (opcional, 10 ou 11 digitos) e so entao atribui, de modo que um erro nunca deixa o cliente alterado pela metade. O id nunca muda
+- `service/ClienteService.alterar(id, nome, cpf, telefone)`: lanca `IllegalArgumentException` para id menor ou igual a zero e para CPF ja usado por outro cliente, e `RegistroNaoEncontradoException` quando o cliente nao existe
+- `view/MenuAlteracao`: submenu de alteracao no console (opcao 3 do menu principal); Enter em branco mantem o valor atual
+
+Testes: `ClienteAlteracaoTest`, `ClienteServiceAlteracaoTest` e `MenuAlteracaoTest` (caso normal, valor limite e caso de erro para cada metodo).
 
 ## Branches
 
