@@ -119,9 +119,7 @@ class ClienteAlteracaoTest {
         assertThrows(IllegalArgumentException.class,
                 () -> cliente.atualizarDados("Ana Souza", "123", "31988887777"));
 
-        assertEquals("Ana Silva", cliente.getNome());
-        assertEquals("12345678901", cliente.getCpf());
-        assertEquals("31999999999", cliente.getTelefone());
+        assertDadosOriginaisInalterados();
     }
 
     @Test
@@ -129,6 +127,10 @@ class ClienteAlteracaoTest {
         assertThrows(IllegalArgumentException.class,
                 () -> cliente.atualizarDados(" ", "10987654321", "31988887777"));
 
+        assertDadosOriginaisInalterados();
+    }
+
+    private void assertDadosOriginaisInalterados() {
         assertEquals("Ana Silva", cliente.getNome());
         assertEquals("12345678901", cliente.getCpf());
         assertEquals("31999999999", cliente.getTelefone());
