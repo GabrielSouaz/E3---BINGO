@@ -30,7 +30,7 @@ public class ConsultaClienteService {
     public Cliente buscarPorCpf(String cpf) {
         String somenteNumeros = limparCpf(cpf);
         return clienteService.listarTodos().stream()
-                .filter(cliente -> cliente.getCpf().equals(somenteNumeros))
+                .filter(cliente -> somenteNumeros.equals(cliente.getCpf()))
                 .findFirst()
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Cliente com CPF " + cpf + " nao encontrado."));
     }
