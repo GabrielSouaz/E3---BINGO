@@ -40,6 +40,16 @@ E3---BINGO
     |-- test/java/br/com/bingo
 ```
 
+## Diagrama de classes
+
+![Diagrama de classes do E3 BINGO](docs/diagrama_classes.png)
+
+Tambem disponivel em [SVG](docs/diagrama_classes.svg), que nao perde qualidade com zoom.
+
+## Apresentacao
+
+Os slides da apresentacao do trabalho estao em [docs/apresentacao_E3_BINGO.pptx](docs/apresentacao_E3_BINGO.pptx).
+
 ## Como executar
 
 Compilar e rodar os testes:
@@ -60,6 +70,21 @@ Ou compilando e executando direto:
 mvn compile
 java -cp target/classes br.com.bingo.Main
 ```
+
+### Sem Maven (so com o Java)
+
+Se o computador nao tiver Maven, basta ter o Java (versao 17 ou superior) instalado. Dentro da pasta do projeto:
+
+```
+javac -encoding UTF-8 -d out -sourcepath src/main/java src/main/java/br/com/bingo/Main.java
+java -cp out br.com.bingo.Main
+```
+
+O primeiro comando compila a classe `Main` e, a partir dela, todas as classes que ela usa (o `-sourcepath` diz ao `javac` onde procurar). Funciona em qualquer terminal: PowerShell, Prompt de Comando, Git Bash, Linux ou macOS.
+
+Para conferir se o Java esta instalado: `java -version`.
+
+Os testes JUnit precisam das bibliotecas do JUnit, entao para roda-los use o Maven (`mvn test`) ou uma IDE (no IntelliJ ou no VS Code: clique com o botao direito em `src/test/java` e escolha rodar todos os testes). Eles tambem rodam automaticamente no GitHub Actions a cada Pull Request.
 
 ## Funcionalidade de Consulta
 
