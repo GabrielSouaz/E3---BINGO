@@ -38,6 +38,13 @@ public class ClienteService {
     }
 
     public void alterar(int id, String nome, String cpf, String telefone) {
+        Cliente cliente = buscarParaAlteracao(id);
+        validarCpfDisponivel(id, cpf);
+
+        cliente.atualizarDados(nome, cpf, telefone);
+    }
+
+    private Cliente buscarParaAlteracao(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("O id do cliente deve ser maior que zero.");
         }
@@ -45,12 +52,16 @@ public class ClienteService {
         if (cliente == null) {
             throw new RegistroNaoEncontradoException("Cliente com id " + id + " nao encontrado.");
         }
+        return cliente;
+    }
+
+    private void validarCpfDisponivel(int idDoCliente, String cpf) {
         for (Cliente outro : bancoDeDados.values()) {
-            if (outro.getId() != id && outro.getCpf() != null && outro.getCpf().equals(cpf)) {
+            boolean mesmoCpf = outro.getCpf() != null && outro.getCpf().equals(cpf);
+            if (outro.getId() != idDoCliente && mesmoCpf) {
                 throw new IllegalArgumentException("Ja existe outro cliente com esse CPF.");
             }
         }
-        cliente.atualizarDados(nome, cpf, telefone);
     }
 
     public void excluir(int id) {
