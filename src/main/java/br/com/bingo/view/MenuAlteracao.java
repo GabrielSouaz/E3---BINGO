@@ -3,6 +3,7 @@ package br.com.bingo.view;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+import br.com.bingo.exception.RegistroNaoEncontradoException;
 import br.com.bingo.model.Cliente;
 import br.com.bingo.service.ClienteService;
 
@@ -23,9 +24,29 @@ public class MenuAlteracao {
     public void exibir() {
         saida.println("----- ALTERAR CLIENTE -----");
 
+        try {
+            int id = lerId();
+            alterarCliente(id);
+        } catch (IllegalArgumentException | RegistroNaoEncontradoException e) {
+            saida.println(e.getMessage());
+        }
+    }
+
+    private int lerId() {
         saida.print("Id do cliente: ");
-        int id = Integer.parseInt(entrada.nextLine().trim());
-        Cliente atual = clienteService.buscarPorId(id).get();
+
+        try {
+            return Integer.parseInt(entrada.nextLine().trim());
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(
+                    "Valor invalido: informe um numero inteiro.");
+        }
+    }
+
+    private void alterarCliente(int id) {
+        Cliente atual = clienteService.buscarPorId(id).orElseThrow(
+                () -> new RegistroNaoEncontradoException(
+                        "Cliente com id " + id + " nao encontrado."));
 
         String nome = lerCampo("Nome", atual.getNome());
         String cpf = lerCampo("CPF", atual.getCpf());
@@ -38,7 +59,7 @@ public class MenuAlteracao {
 
     private String lerCampo(String rotulo, String valorAtual) {
         saida.print(rotulo + " [" + valorAtual + "]: ");
-        String digitado = entrada.nextLine();
+        String digitado = entrada.hasNextLine() ? entrada.nextLine() : "";
         return digitado.isBlank() ? valorAtual : digitado;
     }
 }
