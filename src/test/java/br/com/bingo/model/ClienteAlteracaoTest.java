@@ -57,4 +57,48 @@ class ClienteAlteracaoTest {
         assertThrows(IllegalArgumentException.class,
                 () -> cliente.atualizarDados("   ", "12345678901", "31999999999"));
     }
+
+    @Test
+    void naoDeveAtualizarComCpfNulo() {
+        assertThrows(IllegalArgumentException.class,
+                () -> cliente.atualizarDados("Ana Souza", null, "31999999999"));
+    }
+
+    @Test
+    void naoDeveAtualizarComCpfCom10Digitos() {
+        assertThrows(IllegalArgumentException.class,
+                () -> cliente.atualizarDados("Ana Souza", "1234567890", "31999999999"));
+    }
+
+    @Test
+    void naoDeveAtualizarComCpfCom12Digitos() {
+        assertThrows(IllegalArgumentException.class,
+                () -> cliente.atualizarDados("Ana Souza", "123456789012", "31999999999"));
+    }
+
+    @Test
+    void naoDeveAtualizarComCpfContendoLetras() {
+        assertThrows(IllegalArgumentException.class,
+                () -> cliente.atualizarDados("Ana Souza", "1234567890a", "31999999999"));
+    }
+
+    @Test
+    void naoDeveAlterarNenhumCampoQuandoCpfForInvalido() {
+        assertThrows(IllegalArgumentException.class,
+                () -> cliente.atualizarDados("Ana Souza", "123", "31988887777"));
+
+        assertEquals("Ana Silva", cliente.getNome());
+        assertEquals("12345678901", cliente.getCpf());
+        assertEquals("31999999999", cliente.getTelefone());
+    }
+
+    @Test
+    void naoDeveAlterarNenhumCampoQuandoNomeForInvalido() {
+        assertThrows(IllegalArgumentException.class,
+                () -> cliente.atualizarDados(" ", "10987654321", "31988887777"));
+
+        assertEquals("Ana Silva", cliente.getNome());
+        assertEquals("12345678901", cliente.getCpf());
+        assertEquals("31999999999", cliente.getTelefone());
+    }
 }
