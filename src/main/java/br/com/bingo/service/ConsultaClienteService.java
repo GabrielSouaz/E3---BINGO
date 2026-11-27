@@ -7,30 +7,29 @@ import java.util.stream.Collectors;
 
 import br.com.bingo.exception.RegistroNaoEncontradoException;
 import br.com.bingo.model.Cliente;
-import br.com.bingo.repository.ClienteRepositorio;
 
 public class ConsultaClienteService {
 
-    private final ClienteRepositorio repositorio;
+    private final ClienteService clienteService;
 
-    public ConsultaClienteService(ClienteRepositorio repositorio) {
-        if (repositorio == null) {
-            throw new IllegalArgumentException("O repositorio de clientes e obrigatorio.");
+    public ConsultaClienteService(ClienteService clienteService) {
+        if (clienteService == null) {
+            throw new IllegalArgumentException("O servico de clientes e obrigatorio.");
         }
-        this.repositorio = repositorio;
+        this.clienteService = clienteService;
     }
 
     public Cliente buscarPorId(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("O id deve ser maior que zero.");
         }
-        return repositorio.buscarPorId(id)
+        return clienteService.buscarPorId(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Cliente com id " + id + " nao encontrado."));
     }
 
     public Cliente buscarPorCpf(String cpf) {
         String somenteNumeros = limparCpf(cpf);
-        return repositorio.listarTodos().stream()
+        return clienteService.listarTodos().stream()
                 .filter(cliente -> cliente.getCpf().equals(somenteNumeros))
                 .findFirst()
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Cliente com CPF " + cpf + " nao encontrado."));
@@ -41,30 +40,30 @@ public class ConsultaClienteService {
             throw new IllegalArgumentException("Informe um nome para a busca.");
         }
         String termoNormalizado = normalizar(termo.trim());
-        return repositorio.listarTodos().stream()
+        return clienteService.listarTodos().stream()
                 .filter(cliente -> normalizar(cliente.getNome()).contains(termoNormalizado))
                 .sorted(Comparator.comparing(Cliente::getNome))
                 .collect(Collectors.toList());
     }
 
     public List<Cliente> listarTodos() {
-        return repositorio.listarTodos().stream()
+        return clienteService.listarTodos().stream()
                 .sorted(Comparator.comparingInt(Cliente::getId))
                 .collect(Collectors.toList());
     }
 
     public List<Cliente> listarOrdenadoPorNome() {
-        return repositorio.listarTodos().stream()
+        return clienteService.listarTodos().stream()
                 .sorted(Comparator.comparing(Cliente::getNome, String.CASE_INSENSITIVE_ORDER))
                 .collect(Collectors.toList());
     }
 
     public int contarClientes() {
-        return repositorio.listarTodos().size();
+        return clienteService.listarTodos().size();
     }
 
     public boolean existeCliente(int id) {
-        return repositorio.buscarPorId(id).isPresent();
+        return clienteService.buscarPorId(id).isPresent();
     }
 
     private static String limparCpf(String cpf) {
