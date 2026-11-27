@@ -116,4 +116,15 @@ class MenuAlteracaoTest {
 
         assertTrue(saida.contains("Cliente alterado com sucesso"));
     }
+
+    @Test
+    void deveIndicarCamposNaoInformadosEmVezDeNull() {
+        clienteService.cadastrar(new Cliente("5", "Cliente Mock", false));
+
+        String saida = executar("5\n\n\n\n");
+
+        assertTrue(saida.contains("CPF [nao informado]"));
+        assertTrue(saida.contains("Telefone [nao informado]"));
+        assertFalse(saida.contains("[null]"));
+    }
 }
