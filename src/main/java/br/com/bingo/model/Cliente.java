@@ -46,6 +46,7 @@ public class Cliente {
 
     public void atualizarDados(String nome, String cpf, String telefone) {
         this.validarNome(nome);
+        this.validarCpf(cpf);
         this.nome = nome.trim();
         this.cpf = cpf;
         this.telefone = telefone;
