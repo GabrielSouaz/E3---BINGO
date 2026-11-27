@@ -2,6 +2,7 @@ package br.com.bingo;
 
 import java.util.Scanner;
 
+import br.com.bingo.view.MenuAlteracao;
 import br.com.bingo.view.MenuCadastro;
 
 import br.com.bingo.repository.CartelaRepositorio;
@@ -27,7 +28,9 @@ public class Main {
         ClienteService clienteService = new ClienteService();
         MenuCadastro menuCadastro = new MenuCadastro(
             clienteService, scanner, System.out);
-        
+        MenuAlteracao menuAlteracao = new MenuAlteracao(
+            clienteService, scanner, System.out);
+
         clienteService.cadastrar(new Cliente("1", "Cliente Teste", false));
         clienteService.cadastrar(new Cliente("2", "Cliente Devedor", true));
 
@@ -56,7 +59,7 @@ public class Main {
                     menuConsulta.exibir();
                     break;
                 case 3:
-                    System.out.println("Alterar: funcionalidade em desenvolvimento.");
+                    menuAlteracao.exibir();
                     break;
                 case 4:
                     // Seu código de exclusão

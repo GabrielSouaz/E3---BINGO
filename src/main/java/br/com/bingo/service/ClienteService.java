@@ -1,5 +1,6 @@
 package br.com.bingo.service;
 
+import br.com.bingo.exception.RegistroNaoEncontradoException;
 import br.com.bingo.model.Cliente;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +35,33 @@ public class ClienteService {
 
     public Optional<Cliente> buscarPorId(int id) {
         return Optional.ofNullable(bancoDeDados.get(id));
+    }
+
+    public void alterar(int id, String nome, String cpf, String telefone) {
+        Cliente cliente = buscarParaAlteracao(id);
+        validarCpfDisponivel(id, cpf);
+
+        cliente.atualizarDados(nome, cpf, telefone);
+    }
+
+    private Cliente buscarParaAlteracao(int id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("O id do cliente deve ser maior que zero.");
+        }
+        Cliente cliente = bancoDeDados.get(id);
+        if (cliente == null) {
+            throw new RegistroNaoEncontradoException("Cliente com id " + id + " nao encontrado.");
+        }
+        return cliente;
+    }
+
+    private void validarCpfDisponivel(int idDoCliente, String cpf) {
+        for (Cliente outro : bancoDeDados.values()) {
+            boolean mesmoCpf = outro.getCpf() != null && outro.getCpf().equals(cpf);
+            if (outro.getId() != idDoCliente && mesmoCpf) {
+                throw new IllegalArgumentException("Ja existe outro cliente com esse CPF.");
+            }
+        }
     }
 
     public void excluir(int id) {

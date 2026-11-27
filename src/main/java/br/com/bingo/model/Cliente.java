@@ -8,6 +8,7 @@ public class Cliente {
     private boolean possuiDivida;
 
     private static final String PADRAO_CPF = "[0-9]{11}";
+    private static final String PADRAO_TELEFONE = "[0-9]{10,11}";
 
     public Cliente(int id, String nome, String cpf, String telefone) {
         this.validarId(id);
@@ -42,6 +43,21 @@ public class Cliente {
         if (cpf == null || !cpf.matches(PADRAO_CPF)) {
             throw new IllegalArgumentException("O CPF deve conter 11 digitos numericos.");
         }
+    }
+
+    private void validarTelefone(String telefone) {
+        if (telefone != null && !telefone.isEmpty() && !telefone.matches(PADRAO_TELEFONE)) {
+            throw new IllegalArgumentException("O telefone deve conter 10 ou 11 digitos numericos.");
+        }
+    }
+
+    public void atualizarDados(String nome, String cpf, String telefone) {
+        this.validarNome(nome);
+        this.validarCpf(cpf);
+        this.validarTelefone(telefone);
+        this.nome = nome.trim();
+        this.cpf = cpf;
+        this.telefone = telefone;
     }
 
     public int getId() { return id; }

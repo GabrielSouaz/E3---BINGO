@@ -65,6 +65,18 @@ Classes:
 
 Testes: `ClienteTest`, `CartelaTest`, `ClienteRepositorioTest`, `CartelaRepositorioTest`, `ConsultaClienteServiceTest`, `ConsultaCartelaServiceTest` e `MenuConsultaTest` (caso normal, valor limite e caso de erro para cada metodo).
 
+## Funcionalidade de Alteracao
+
+Desenvolvida na branch `feature/alteracao`, seguindo o ciclo RED, GREEN, REFACTOR.
+
+Classes e metodos:
+
+- `model/Cliente.atualizarDados(nome, cpf, telefone)`: valida nome (nao vazio), CPF (11 digitos) e telefone (opcional, 10 ou 11 digitos) e so entao atribui, de modo que um erro nunca deixa o cliente alterado pela metade. O id nunca muda
+- `service/ClienteService.alterar(id, nome, cpf, telefone)`: lanca `IllegalArgumentException` para id menor ou igual a zero e para CPF ja usado por outro cliente, e `RegistroNaoEncontradoException` quando o cliente nao existe
+- `view/MenuAlteracao`: submenu de alteracao no console (opcao 3 do menu principal); Enter em branco mantem o valor atual
+
+Testes: `ClienteAlteracaoTest`, `ClienteServiceAlteracaoTest` e `MenuAlteracaoTest` (caso normal, valor limite e caso de erro para cada metodo).
+
 ## Branches
 
 - `main`: versao estavel, sem push direto (somente via Pull Request)
