@@ -44,6 +44,13 @@ public class Cliente {
         }
     }
 
+    public void atualizarDados(String nome, String cpf, String telefone) {
+        this.validarNome(nome);
+        this.nome = nome.trim();
+        this.cpf = cpf;
+        this.telefone = telefone;
+    }
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getNome() { return nome; }
