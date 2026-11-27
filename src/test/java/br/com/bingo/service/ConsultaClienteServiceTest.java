@@ -9,20 +9,20 @@ import org.junit.jupiter.api.Test;
 
 import br.com.bingo.exception.RegistroNaoEncontradoException;
 import br.com.bingo.model.Cliente;
-import br.com.bingo.repository.ClienteRepositorio;
+
 
 class ConsultaClienteServiceTest {
 
-    private ClienteRepositorio repositorio;
+    private ClienteService clienteService;
     private ConsultaClienteService consulta;
 
     @BeforeEach
     void setUp() {
-        repositorio = new ClienteRepositorio();
-        repositorio.adicionar(new Cliente(1, "Maria Silva", "12345678901", "31999990000"));
-        repositorio.adicionar(new Cliente(2, "Joao Souza", "98765432100", "31988880000"));
-        repositorio.adicionar(new Cliente(3, "Ana Maria Costa", "11122233344", "31977770000"));
-        consulta = new ConsultaClienteService(repositorio);
+        clienteService = new ClienteService();
+        clienteService.cadastrar(new Cliente(1, "Maria Silva", "12345678901", "31999990000"));
+        clienteService.cadastrar(new Cliente(2, "Joao Souza", "98765432100", "31988880000"));
+        clienteService.cadastrar(new Cliente(3, "Ana Maria Costa", "11122233344", "31977770000"));
+        consulta = new ConsultaClienteService(clienteService);
     }
 
     // ---- buscarPorId
@@ -77,6 +77,20 @@ class ConsultaClienteServiceTest {
         assertThrows(IllegalArgumentException.class, () -> consulta.buscarPorCpf(null));
     }
 
+    @Test
+    void deveBuscarPorCpfMesmoComClienteSemCpfCadastrado() {
+        clienteService.cadastrar(new Cliente("4", "Cliente Sem Cpf", false));
+        assertEquals(1, consulta.buscarPorCpf("12345678901").getId());
+    }
+
+    @Test
+    void deveLancarNaoEncontradoQuandoSoHaClienteSemCpf() {
+        ClienteService soSemCpf = new ClienteService();
+        soSemCpf.cadastrar(new Cliente("1", "Cliente Sem Cpf", false));
+        assertThrows(RegistroNaoEncontradoException.class,
+                () -> new ConsultaClienteService(soSemCpf).buscarPorCpf("00000000000"));
+    }
+
     // ---- buscarPorNome
 
     @Test
@@ -87,7 +101,7 @@ class ConsultaClienteServiceTest {
 
     @Test
     void deveIgnorarMaiusculasEAcentosNaBuscaPorNome() {
-        repositorio.adicionar(new Cliente(4, "José Antônio", "55566677788", "31966660000"));
+        clienteService.cadastrar(new Cliente(4, "José Antônio", "55566677788", "31966660000"));
         assertEquals(4, consulta.buscarPorNome("JOSE ANTONIO").get(0).getId());
     }
 
@@ -120,9 +134,9 @@ class ConsultaClienteServiceTest {
 
     @Test
     void deveOrdenarPorIdMesmoQuandoInseridosForaDeOrdem() {
-        ClienteRepositorio outro = new ClienteRepositorio();
-        outro.adicionar(new Cliente(7, "Zeca", "77777777777", "31900000007"));
-        outro.adicionar(new Cliente(5, "Bruno", "55555555555", "31900000005"));
+        ClienteService outro = new ClienteService();
+        outro.cadastrar(new Cliente(7, "Zeca", "77777777777", "31900000007"));
+        outro.cadastrar(new Cliente(5, "Bruno", "55555555555", "31900000005"));
         List<Cliente> todos = new ConsultaClienteService(outro).listarTodos();
         assertEquals(5, todos.get(0).getId());
         assertEquals(7, todos.get(1).getId());
@@ -130,7 +144,7 @@ class ConsultaClienteServiceTest {
 
     @Test
     void deveRetornarListaVaziaQuandoNaoHaClientesCadastrados() {
-        ConsultaClienteService vazia = new ConsultaClienteService(new ClienteRepositorio());
+        ConsultaClienteService vazia = new ConsultaClienteService(new ClienteService());
         assertTrue(vazia.listarTodos().isEmpty());
     }
 
@@ -146,14 +160,14 @@ class ConsultaClienteServiceTest {
 
     @Test
     void deveOrdenarIgnorandoMaiusculas() {
-        repositorio.adicionar(new Cliente(4, "bruno lima", "44444444444", "31900000004"));
+        clienteService.cadastrar(new Cliente(4, "bruno lima", "44444444444", "31900000004"));
         List<Cliente> todos = consulta.listarOrdenadoPorNome();
         assertEquals("bruno lima", todos.get(1).getNome());
     }
 
     @Test
     void deveRetornarListaVaziaAoOrdenarSemClientes() {
-        ConsultaClienteService vazia = new ConsultaClienteService(new ClienteRepositorio());
+        ConsultaClienteService vazia = new ConsultaClienteService(new ClienteService());
         assertTrue(vazia.listarOrdenadoPorNome().isEmpty());
     }
 
@@ -166,12 +180,12 @@ class ConsultaClienteServiceTest {
 
     @Test
     void deveRetornarZeroQuandoNaoHaClientes() {
-        assertEquals(0, new ConsultaClienteService(new ClienteRepositorio()).contarClientes());
+        assertEquals(0, new ConsultaClienteService(new ClienteService()).contarClientes());
     }
 
     @Test
     void deveAtualizarContagemAposNovoCadastro() {
-        repositorio.adicionar(new Cliente(4, "Bruno", "44444444444", "31900000004"));
+        clienteService.cadastrar(new Cliente(4, "Bruno", "44444444444", "31900000004"));
         assertEquals(4, consulta.contarClientes());
     }
 

@@ -6,7 +6,6 @@ import br.com.bingo.view.MenuAlteracao;
 import br.com.bingo.view.MenuCadastro;
 
 import br.com.bingo.repository.CartelaRepositorio;
-import br.com.bingo.repository.ClienteRepositorio;
 import br.com.bingo.service.ConsultaCartelaService;
 import br.com.bingo.service.ConsultaClienteService;
 import br.com.bingo.view.MenuConsulta;
@@ -18,14 +17,13 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ClienteRepositorio clienteRepositorio = new ClienteRepositorio();
+        ClienteService clienteService = new ClienteService();
         CartelaRepositorio cartelaRepositorio = new CartelaRepositorio();
         MenuConsulta menuConsulta = new MenuConsulta(
-                new ConsultaClienteService(clienteRepositorio),
+                new ConsultaClienteService(clienteService),
                 new ConsultaCartelaService(cartelaRepositorio),
                 scanner, System.out);
 
-        ClienteService clienteService = new ClienteService();
         MenuCadastro menuCadastro = new MenuCadastro(
             clienteService, scanner, System.out);
         MenuAlteracao menuAlteracao = new MenuAlteracao(

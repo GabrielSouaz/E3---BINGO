@@ -2,7 +2,10 @@ package br.com.bingo.service;
 
 import br.com.bingo.exception.RegistroNaoEncontradoException;
 import br.com.bingo.model.Cliente;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -35,6 +38,10 @@ public class ClienteService {
 
     public Optional<Cliente> buscarPorId(int id) {
         return Optional.ofNullable(bancoDeDados.get(id));
+    }
+
+    public List<Cliente> listarTodos() {
+        return Collections.unmodifiableList(new ArrayList<>(bancoDeDados.values()));
     }
 
     public void alterar(int id, String nome, String cpf, String telefone) {

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import br.com.bingo.model.Cartela;
 import br.com.bingo.model.Cliente;
 import br.com.bingo.repository.CartelaRepositorio;
-import br.com.bingo.repository.ClienteRepositorio;
+import br.com.bingo.service.ClienteService;
 import br.com.bingo.service.ConsultaCartelaService;
 import br.com.bingo.service.ConsultaClienteService;
 
@@ -23,10 +23,10 @@ class MenuConsultaTest {
 
     @BeforeEach
     void setUp() {
-        ClienteRepositorio clientes = new ClienteRepositorio();
+        ClienteService clientes = new ClienteService();
         Cliente maria = new Cliente(1, "Maria Silva", "12345678901", "31999990000");
-        clientes.adicionar(maria);
-        clientes.adicionar(new Cliente(2, "Joao Souza", "98765432100", "31988880000"));
+        clientes.cadastrar(maria);
+        clientes.cadastrar(new Cliente(2, "Joao Souza", "98765432100", "31988880000"));
 
         CartelaRepositorio cartelas = new CartelaRepositorio();
         cartelas.adicionar(new Cartela(1, maria, 5.0, 1));
