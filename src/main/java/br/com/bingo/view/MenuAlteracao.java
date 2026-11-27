@@ -58,7 +58,8 @@ public class MenuAlteracao {
     }
 
     private String lerCampoOuManter(String rotulo, String valorAtual) {
-        saida.print(rotulo + " [" + valorAtual + "]: ");
+        String exibido = valorAtual == null ? "nao informado" : valorAtual;
+        saida.print(rotulo + " [" + exibido + "]: ");
         String digitado = entrada.hasNextLine() ? entrada.nextLine() : "";
         return digitado.isBlank() ? valorAtual : digitado;
     }
