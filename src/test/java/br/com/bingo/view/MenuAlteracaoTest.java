@@ -66,4 +66,54 @@ class MenuAlteracaoTest {
         assertEquals("12345678901", cliente.getCpf());
         assertEquals("31999999999", cliente.getTelefone());
     }
+
+    @Test
+    void deveMostrarMensagemParaIdNaoNumerico() {
+        String saida = executar("abc\n");
+
+        assertTrue(saida.contains("Valor invalido"));
+        assertEquals("Ana Silva", clienteService.buscarPorId(1).get().getNome());
+    }
+
+    @Test
+    void deveMostrarMensagemParaClienteInexistente() {
+        String saida = executar("99\n");
+
+        assertTrue(saida.contains("nao encontrado"));
+        assertFalse(saida.contains("Cliente alterado com sucesso"));
+    }
+
+    @Test
+    void deveMostrarMensagemParaIdZero() {
+        String saida = executar("0\n");
+
+        assertTrue(saida.contains("nao encontrado"));
+    }
+
+    @Test
+    void deveMostrarMensagemParaCpfInvalidoSemAlterarOCliente() {
+        String saida = executar("1\nAna Souza\n123\n31988887777\n");
+
+        assertTrue(saida.contains("CPF"));
+        assertFalse(saida.contains("Cliente alterado com sucesso"));
+        assertEquals("Ana Silva", clienteService.buscarPorId(1).get().getNome());
+        assertEquals("12345678901", clienteService.buscarPorId(1).get().getCpf());
+    }
+
+    @Test
+    void deveMostrarMensagemParaCpfJaUsadoPorOutroCliente() {
+        clienteService.cadastrar(new Cliente(2, "Bruno Lima", "98765432100", "31977776666"));
+
+        String saida = executar("1\nAna Souza\n98765432100\n\n");
+
+        assertTrue(saida.contains("Ja existe outro cliente com esse CPF"));
+        assertEquals("12345678901", clienteService.buscarPorId(1).get().getCpf());
+    }
+
+    @Test
+    void naoDeveQuebrarQuandoAEntradaTerminaAntesDoFim() {
+        String saida = executar("1\n");
+
+        assertTrue(saida.contains("Cliente alterado com sucesso"));
+    }
 }
