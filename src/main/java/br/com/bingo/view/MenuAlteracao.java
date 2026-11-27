@@ -48,16 +48,16 @@ public class MenuAlteracao {
                 () -> new RegistroNaoEncontradoException(
                         "Cliente com id " + id + " nao encontrado."));
 
-        String nome = lerCampo("Nome", atual.getNome());
-        String cpf = lerCampo("CPF", atual.getCpf());
-        String telefone = lerCampo("Telefone", atual.getTelefone());
+        String nome = lerCampoOuManter("Nome", atual.getNome());
+        String cpf = lerCampoOuManter("CPF", atual.getCpf());
+        String telefone = lerCampoOuManter("Telefone", atual.getTelefone());
 
         clienteService.alterar(id, nome, cpf, telefone);
 
         saida.println("Cliente alterado com sucesso!");
     }
 
-    private String lerCampo(String rotulo, String valorAtual) {
+    private String lerCampoOuManter(String rotulo, String valorAtual) {
         saida.print(rotulo + " [" + valorAtual + "]: ");
         String digitado = entrada.hasNextLine() ? entrada.nextLine() : "";
         return digitado.isBlank() ? valorAtual : digitado;
