@@ -77,6 +77,20 @@ class ConsultaClienteServiceTest {
         assertThrows(IllegalArgumentException.class, () -> consulta.buscarPorCpf(null));
     }
 
+    @Test
+    void deveBuscarPorCpfMesmoComClienteSemCpfCadastrado() {
+        clienteService.cadastrar(new Cliente("4", "Cliente Sem Cpf", false));
+        assertEquals(1, consulta.buscarPorCpf("12345678901").getId());
+    }
+
+    @Test
+    void deveLancarNaoEncontradoQuandoSoHaClienteSemCpf() {
+        ClienteService soSemCpf = new ClienteService();
+        soSemCpf.cadastrar(new Cliente("1", "Cliente Sem Cpf", false));
+        assertThrows(RegistroNaoEncontradoException.class,
+                () -> new ConsultaClienteService(soSemCpf).buscarPorCpf("00000000000"));
+    }
+
     // ---- buscarPorNome
 
     @Test
