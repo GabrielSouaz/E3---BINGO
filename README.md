@@ -40,6 +40,12 @@ E3---BINGO
     |-- test/java/br/com/bingo
 ```
 
+## Diagrama de classes
+
+![Diagrama de classes do E3 BINGO](docs/diagrama_classes.png)
+
+Tambem disponivel em [SVG](docs/diagrama_classes.svg), que nao perde qualidade com zoom.
+
 ## Como executar
 
 Compilar e rodar os testes:
