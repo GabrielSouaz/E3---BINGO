@@ -8,6 +8,17 @@ O sistema apoia a gestao de um jogo de bingo: clientes (cadastrar, consultar, al
 
 Este repositorio foi criado em uma conta diferente da usada nas atividades anteriores, porque o limite de uso do Codespaces da conta anterior foi atingido.
 
+## Integrantes
+
+| Nome | RA | GitHub |
+|------|----|--------|
+| Ana Beatriz Silva Costa | 326132109 | @beatrizc-s |
+| Gabriel de Souza Ribeiro | 32514596 | @GabrielSouaz |
+| Carlos Gabriel Claudino de Souza | 325131028 | @9890858Cg |
+| Lara Cristyna Rodrigues Lopes Silva | 325131743 | @LaraCristy |
+| Breno Henrique Barbosa Correia | 32517400 | @Brenoh1810 |
+| Bento Ramalho Botelho | 325119554 | @CelestialB80-jpg |
+
 ## Tecnologias
 
 - Java 17
